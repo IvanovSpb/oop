@@ -1,0 +1,1 @@
+{"balance":-100.0,"transactions":[{"category":{"name":"eat"},"amount":300.0,"type":"INCOME"},{"category":{"name":"eat"},"amount":400.0,"type":"EXPENSE"}],"budgetByCategory":{}}
