@@ -10,7 +10,8 @@ public class FileOutput implements Output {
     public FileOutput(String filename) {
         this.filename = filename;
     }
-    public String getFilename() {
+
+    public String getFileName() {
         return filename;
     }
 
@@ -20,7 +21,10 @@ public class FileOutput implements Output {
             writer.write(message);
             writer.newLine();
         } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
+            System.err.println("Ошибка записи в файл: " + e.getMessage());
         }
+    }
+    public String getFilename() {
+        return filename;
     }
 }

@@ -20,21 +20,21 @@ public class Main {
 
         while (true) {
             if (currentUserName == null) {
-                output.print("Welcome to the Personal Finance Manager!");
-                output.print("Please login or register (login/register)");
+                output.print("Добро пожаловать в Менеджер личных финансов!");
+                output.print("Пожалуйста, войдите или зарегистрируйтесь (войти/зарегистрироваться)");
                 String action = scanner.nextLine();
 
-                if ("register".equalsIgnoreCase(action)) {
-                    output.print("Enter new user login:");
+                if ("зарегистрироваться".equalsIgnoreCase(action)) {
+                    output.print("Введите логин нового пользователя:");
                     String newLogin = scanner.nextLine();
-                    output.print("Enter new user password:");
+                    output.print("Введите пароль нового пользователя:");
                     String newPassword = scanner.nextLine();
                     authService.registerUser(new User(newLogin, newPassword));
-                    output.print("User register successfully");
-                } else if ("login".equalsIgnoreCase(action)) {
-                    output.print("Enter login:");
+                    output.print("Пользователь успешно зарегистрирован");
+                } else if ("войти".equalsIgnoreCase(action)) {
+                    output.print("Введите логин:");
                     String login = scanner.nextLine();
-                    output.print("Enter password:");
+                    output.print("Введите пароль:");
                     String password = scanner.nextLine();
                     User user = authService.authenticateUser(login, password);
                     if (user != null) {
@@ -42,27 +42,27 @@ public class Main {
                         try {
                             currentWallet = dataStorage.loadWallet(currentUserName + ".json");
                         } catch (IOException e) {
-                            output.print("Error load wallet: " + e.getMessage());
+                            output.print("Ошибка загрузки кошелька: " + e.getMessage());
                             currentWallet = new Wallet();
                         }
-                        output.print("Login successful, Welcome " + currentUserName);
+                        output.print("Вход выполнен, Добро пожаловать " + currentUserName);
                     } else {
-                        output.print("Invalid login or password");
+                        output.print("Неверный логин или пароль");
                     }
                 }
                 else{
-                    output.print("Invalid action. Please enter 'login' or 'register'.");
+                    output.print("Неверное действие. Пожалуйста, введите 'войти' или 'зарегистрироваться'.");
                 }
             }else{
-                output.print("Available command:\n" +
-                        "add_income <category> <amount>\n" +
-                        "add_expense <category> <amount>\n" +
-                        "set_budget <category> <amount>\n" +
+                output.print("Доступные команды:\n" +
+                        "add_income <категория> <сумма>\n" +
+                        "add_expense <категория> <сумма>\n" +
+                        "set_budget <категория> <сумма>\n" +
                         "print_report\n" +
-                        "print_report <filename>\n" +
-                        "calculate_total <categories separated by comma>\n" +
-                        "calculate_income <categories separated by comma>\n" +
-                        "calculate_expense <categories separated by comma>\n" +
+                        "print_report <имя_файла>\n" +
+                        "calculate_total <категории через запятую>\n" +
+                        "calculate_income <категории через запятую>\n" +
+                        "calculate_expense <категории через запятую>\n" +
                         "logout\n" +
                         "exit");
 
@@ -74,13 +74,13 @@ public class Main {
                             Category category = new Category(parts[1]);
                             double amount = Double.parseDouble(parts[2]);
                             financeManager.addTransaction(currentWallet, new Transaction(category, amount, Transaction.TransactionType.INCOME));
-                            output.print("Income added successfully");
+                            output.print("Доход успешно добавлен");
                         } catch (NumberFormatException e) {
-                            output.print("Invalid amount format. Please enter a valid number.");
+                            output.print("Неверный формат суммы. Пожалуйста, введите корректное число.");
                         }
                     }
                     else{
-                        output.print("Invalid format. Please enter 'add_income <category> <amount>'");
+                        output.print("Неверный формат. Пожалуйста, введите 'add_income <категория> <сумма>'");
                     }
 
                 } else if (command.startsWith("add_expense")) {
@@ -90,13 +90,13 @@ public class Main {
                             Category category = new Category(parts[1]);
                             double amount = Double.parseDouble(parts[2]);
                             financeManager.addTransaction(currentWallet, new Transaction(category, amount, Transaction.TransactionType.EXPENSE));
-                            output.print("Expense added successfully");
+                            output.print("Расход успешно добавлен");
                         } catch (NumberFormatException e) {
-                            output.print("Invalid amount format. Please enter a valid number.");
+                            output.print("Неверный формат суммы. Пожалуйста, введите корректное число.");
                         }
                     }
                     else{
-                        output.print("Invalid format. Please enter 'add_expense <category> <amount>'");
+                        output.print("Неверный формат. Пожалуйста, введите 'add_expense <категория> <сумма>'");
                     }
                 } else if (command.startsWith("set_budget")) {
                     String[] parts = command.split(" ");
@@ -105,13 +105,13 @@ public class Main {
                             Category category = new Category(parts[1]);
                             double amount = Double.parseDouble(parts[2]);
                             currentWallet.setBudget(category, amount);
-                            output.print("Budget setted for category: " + category.getName() + ", budget: " + amount);
+                            output.print("Бюджет установлен для категории: " + category.getName() + ", бюджет: " + amount);
                         }  catch (NumberFormatException e) {
-                            output.print("Invalid amount format. Please enter a valid number.");
+                            output.print("Неверный формат суммы. Пожалуйста, введите корректное число.");
                         }
                     }
                     else{
-                        output.print("Invalid format. Please enter 'set_budget <category> <amount>'");
+                        output.print("Неверный формат. Пожалуйста, введите 'set_budget <категория> <сумма>'");
                     }
                 }
                 else if (command.startsWith("print_report")) {
@@ -123,29 +123,30 @@ public class Main {
                         reportOutput = output;
                     }
 
-                    reportOutput.print("Total income: " + financeManager.getTotalIncome(currentWallet));
-                    reportOutput.print("Income by category:");
+                    reportOutput.print("Общий доход: " + financeManager.getTotalIncome(currentWallet));
+                    reportOutput.print("Доходы по категориям:");
                     financeManager.getIncomeByCategory(currentWallet).forEach((category, amount) ->
                             reportOutput.print(category.getName() + ": " + amount)
                     );
-                    reportOutput.print("Total expenses: " + financeManager.getTotalExpenses(currentWallet));
-                    reportOutput.print("Budget by category:");
+                    reportOutput.print("Общие расходы: " + financeManager.getTotalExpenses(currentWallet));
+                    reportOutput.print("Бюджет по категориям:");
 
                     Output finalReportOutput = reportOutput;
                     Wallet finalCurrentWallet = currentWallet;
                     currentWallet.getBudgetByCategory().forEach((category, amount) -> {
                         double remainingBudget = financeManager.calculateRemainingBudget(finalCurrentWallet, category);
-                        finalReportOutput.print(category.getName() + ": " + amount + ", remaining budget: " + remainingBudget);
+                        finalReportOutput.print(category.getName() + ": " + amount + ", оставшийся бюджет: " + remainingBudget);
                         if (remainingBudget < 0) {
-                            finalReportOutput.print("Warning: Budget exceeded for category: " + category.getName());
+                            finalReportOutput.print("Предупреждение: Бюджет превышен для категории: " + category.getName());
                         }
                     });
 
                     if (financeManager.getTotalExpenses(currentWallet) > financeManager.getTotalIncome(currentWallet)) {
-                        reportOutput.print("Warning: Total expenses exceed total income");
+                        reportOutput.print("Предупреждение: Общие расходы превышают общий доход");
                     }
+
                     if(reportOutput instanceof  FileOutput){
-                        output.print("Report created in file:" + parts[1]);
+                        output.print("Отчет создан в файле: " + parts[1]);
                     }
                 }
                 else if(command.startsWith("calculate_total")){
@@ -156,9 +157,9 @@ public class Main {
                                 .map(Category::new)
                                 .collect(Collectors.toList());
                         double total = financeManager.calculateRemainingBudget(currentWallet, categories);
-                        output.print("Total remaining budget for selected categories: " + total);
+                        output.print("Общий оставшийся бюджет для выбранных категорий: " + total);
                     } else {
-                        output.print("Invalid command. Usage: calculate_total <category1,category2,...>");
+                        output.print("Неверная команда. Использование: calculate_total <категория1,категория2,...>");
                     }
                 }
                 else if (command.startsWith("calculate_expense")) {
@@ -169,9 +170,9 @@ public class Main {
                                 .map(Category::new)
                                 .collect(Collectors.toList());
                         double totalExpense = financeManager.calculateTotalExpenseForCategories(currentWallet, categories);
-                        output.print("Total expenses for selected categories: " + totalExpense);
+                        output.print("Общая сумма расходов для выбранных категорий: " + totalExpense);
                     } else {
-                        output.print("Invalid command. Usage: calculate_expense <category1,category2,...>");
+                        output.print("Неверная команда. Использование: calculate_expense <категория1,категория2,...>");
                     }
                 }
                 else if(command.startsWith("calculate_income")){
@@ -182,10 +183,10 @@ public class Main {
                                 .map(Category::new)
                                 .collect(Collectors.toList());
                         double totalIncome = financeManager.calculateTotalIncomeForCategories(currentWallet, categories);
-                        output.print("Total income for selected categories: " + totalIncome);
+                        output.print("Общая сумма доходов для выбранных категорий: " + totalIncome);
                     }
                     else{
-                        output.print("Invalid command. Usage: calculate_income <category1,category2,...>");
+                        output.print("Неверная команда. Использование: calculate_income <категория1,категория2,...>");
                     }
                 }
                 else if ("logout".equalsIgnoreCase(command)) {
@@ -193,22 +194,22 @@ public class Main {
                     try {
                         dataStorage.saveWallet(currentUserName + ".json", currentWallet);
                     } catch (IOException e) {
-                        output.print("Error save data:" + e.getMessage());
+                        output.print("Ошибка сохранения данных:" + e.getMessage());
                     }
                     currentWallet = null;
-                    output.print("Logged out successfully");
+                    output.print("Выход из пользователя выполнен успешно");
                 }
                 else if ("exit".equalsIgnoreCase(command)) {
                     try {
                         dataStorage.saveWallet(currentUserName + ".json", currentWallet);
                     } catch (IOException e) {
-                        output.print("Error save data:" + e.getMessage());
+                        output.print("Ошибка сохранения данных:" + e.getMessage());
                     }
-                    output.print("Exiting application");
+                    output.print("Выход из приложения");
                     break;
                 }
                 else{
-                    output.print("Unknown command");
+                    output.print("Неизвестная команда");
                 }
             }
         }
